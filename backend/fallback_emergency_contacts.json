@@ -1,0 +1,298 @@
+{
+    "GLOBAL_HOTLINES": {
+        "International_Crisis_Hotlines": [
+            {
+                "title": "Befrienders Worldwide (Global Suicide Prevention)",
+                "phone_no": "Contact via website (befrienders.org) for local helplines",
+                "importance": "HIGH"
+            },
+            {
+                "title": "Find A Helpline (Global Directory)",
+                "phone_no": "findahelpline.com",
+                "importance": "HIGH"
+            }
+        ]
+    },
+    "NORTH_AMERICA": {
+        "USA": [
+            {
+                "title": "Emergency Services",
+                "phone_no": "911",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "National Domestic Violence Hotline",
+                "phone_no": "1-800-799-7233",
+                "importance": "HIGH"
+            },
+            {
+                "title": "988 Suicide & Crisis Lifeline",
+                "phone_no": "988",
+                "importance": "HIGH"
+            },
+            {
+                "title": "Crisis Text Line",
+                "phone_no": "Text HOME to 741741",
+                "importance": "MEDIUM"
+            }
+        ],
+        "Canada": [
+            {
+                "title": "Emergency Services",
+                "phone_no": "911",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Assaulted Women's Helpline",
+                "phone_no": "1-866-863-0511",
+                "importance": "HIGH"
+            },
+            {
+                "title": "Suicide Crisis Helpline",
+                "phone_no": "988",
+                "importance": "HIGH"
+            },
+            {
+                "title": "ShelterSafe Canada",
+                "phone_no": "sheltersafe.ca (Directory)",
+                "importance": "MEDIUM"
+            }
+        ]
+    },
+    "EUROPE": {
+        "United_Kingdom": [
+            {
+                "title": "Emergency Services",
+                "phone_no": "999",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Non-Emergency Medical Advice",
+                "phone_no": "111",
+                "importance": "LOW"
+            },
+            {
+                "title": "National Domestic Abuse Helpline",
+                "phone_no": "0808 2000 247",
+                "importance": "HIGH"
+            },
+            {
+                "title": "Samaritans (Mental Health)",
+                "phone_no": "116 123",
+                "importance": "MEDIUM"
+            }
+        ],
+        "European_Union_General": [
+            {
+                "title": "Pan-European Emergency Number",
+                "phone_no": "112",
+                "importance": "CRITICAL"
+            }
+        ],
+        "France": [
+            {
+                "title": "Emergency Services (SAMU)",
+                "phone_no": "15",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Police Emergency",
+                "phone_no": "17",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Domestic Violence Helpline (Violences Femmes Info)",
+                "phone_no": "3919",
+                "importance": "HIGH"
+            }
+        ],
+        "Germany": [
+            {
+                "title": "Police Emergency",
+                "phone_no": "110",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Fire & Medical Emergency",
+                "phone_no": "112",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Violence Against Women Support Hotline",
+                "phone_no": "116 016",
+                "importance": "HIGH"
+            }
+        ]
+    },
+    "ASIA": {
+        "India": [
+            {
+                "title": "National Emergency Number",
+                "phone_no": "112",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Women Helpline",
+                "phone_no": "1091",
+                "importance": "HIGH"
+            },
+            {
+                "title": "Domestic Abuse Central Helpline",
+                "phone_no": "181",
+                "importance": "HIGH"
+            },
+            {
+                "title": "Vandrevala Foundation (Mental Health)",
+                "phone_no": "+91 9999 666 555",
+                "importance": "MEDIUM"
+            }
+        ],
+        "Japan": [
+            {
+                "title": "Police Emergency",
+                "phone_no": "110",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Fire & Ambulance Emergency",
+                "phone_no": "119",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "TELL Lifeline (English support)",
+                "phone_no": "03-5774-0992",
+                "importance": "MEDIUM"
+            },
+            {
+                "title": "DV Counseling Plus (Domestic Violence)",
+                "phone_no": "0120-279-889",
+                "importance": "HIGH"
+            }
+        ],
+        "South_Korea": [
+            {
+                "title": "Police Emergency",
+                "phone_no": "112",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Fire & Medical Emergency",
+                "phone_no": "119",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Women's Hotline (Emergency Support)",
+                "phone_no": "1366",
+                "importance": "HIGH"
+            }
+        ]
+    },
+    "OCEANIA": {
+        "Australia": [
+            {
+                "title": "Emergency Services (Triple Zero)",
+                "phone_no": "000",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "1800RESPECT (Domestic & Sexual Violence)",
+                "phone_no": "1800 737 732",
+                "importance": "HIGH"
+            },
+            {
+                "title": "Lifeline Australia",
+                "phone_no": "13 11 14",
+                "importance": "MEDIUM"
+            }
+        ],
+        "New_Zealand": [
+            {
+                "title": "Emergency Services",
+                "phone_no": "111",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Women's Refuge Crisis Line",
+                "phone_no": "0800 733 843",
+                "importance": "HIGH"
+            },
+            {
+                "title": "Lifeline Aotearoa",
+                "phone_no": "0800 543 354",
+                "importance": "MEDIUM"
+            }
+        ]
+    },
+    "AFRICA": {
+        "South_Africa": [
+            {
+                "title": "Police Emergency",
+                "phone_no": "10111",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Ambulance Emergency",
+                "phone_no": "10177",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Gender-Based Violence Command Centre",
+                "phone_no": "0800 428 428",
+                "importance": "HIGH"
+            },
+            {
+                "title": "SADAG Suicide Crisis Line",
+                "phone_no": "0800 567 567",
+                "importance": "HIGH"
+            }
+        ],
+        "Nigeria": [
+            {
+                "title": "National Emergency Number",
+                "phone_no": "112",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Lagos State Emergency (Police/Medical)",
+                "phone_no": "767",
+                "importance": "HIGH"
+            },
+            {
+                "title": "NAPTIP (Human Trafficking / Abuse Hotline)",
+                "phone_no": "0800 225 5627",
+                "importance": "HIGH"
+            }
+        ]
+    },
+    "LATIN_AMERICA": {
+        "Brazil": [
+            {
+                "title": "Police Emergency",
+                "phone_no": "190",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Ambulance Emergency (SAMU)",
+                "phone_no": "192",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Central de Atendimento à Mulher (Women's Abuse Hotline)",
+                "phone_no": "180",
+                "importance": "HIGH"
+            }
+        ],
+        "Mexico": [
+            {
+                "title": "Emergency Services",
+                "phone_no": "911",
+                "importance": "CRITICAL"
+            },
+            {
+                "title": "Línea de Mujeres (Women's Safety/Support Line)",
+                "phone_no": "55 5658 1111",
+                "importance": "HIGH"
+            }
+        ]
+    }
+}
