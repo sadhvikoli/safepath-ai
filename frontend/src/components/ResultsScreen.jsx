@@ -30,6 +30,26 @@ export default function ResultsScreen({ assessment, setScreen }) {
         </div>
 
         <div className="section">
+          <h3>Nearby Verified Resources</h3>
+
+          {assessment.nearby_resources.length === 0 ? (
+            <p>No nearby verified resources found for this location yet.</p>
+          ) : (
+            assessment.nearby_resources.map((resource, index) => (
+              <div className="contact-card" key={index}>
+                <strong>{resource.name}</strong>
+                <p>Type: {resource.type}</p>
+                <p>
+                  {resource.city}, {resource.state}, {resource.country}
+                </p>
+                <p>Phone: {resource.phone}</p>
+                <small>Availability: {resource.availability}</small>
+              </div>
+            ))
+          )}
+        </div>
+
+        <div className="section">
           <h3>Emergency Contacts</h3>
 
           {assessment.emergency_contacts.map((contact, index) => (

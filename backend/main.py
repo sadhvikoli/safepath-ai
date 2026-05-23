@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import json
 import logging
+from pathlib import Path
 from google import genai
 from google.genai import types
 from pydantic import BaseModel, Field
@@ -26,14 +27,35 @@ app.add_middleware(
 
 client = genai.Client()
 
-FILENAME = "fallback_emergency_contacts.json"
+BASE_DIR = Path(__file__).resolve().parent
+
+CONTACT_FILE = BASE_DIR / "fallback_emergency_contacts.json"
+SAFE_RESOURCE_FILE = BASE_DIR / "safe_resources.json"
 
 try:
-    with open(FILENAME, "r") as f:
+    with open(CONTACT_FILE, "r") as f:
         emergency_contacts_db = json.load(f)
 except FileNotFoundError:
-    logger.warning(f"{FILENAME} not found. Emergency contacts fallback will be empty.")
+    logger.warning(f"{CONTACT_FILE} not found. Emergency contacts fallback will be empty.")
     emergency_contacts_db = {}
+
+try:
+    with open(SAFE_RESOURCE_FILE, "r") as f:
+        safe_resources_db = json.load(f)
+except FileNotFoundError:
+    logger.warning(f"{SAFE_RESOURCE_FILE} not found. Nearby resources will be empty.")
+    safe_resources_db = []
+
+
+class SafeResource(BaseModel):
+    name: str
+    type: str
+    city: str
+    state: str
+    country: str
+    phone: str
+    availability: str
+    verified: bool
 
 
 class AssessRequest(BaseModel):
@@ -64,6 +86,7 @@ class AssessResponse(BaseModel):
     reason: str
     safety_plan: SafetyPlan
     emergency_contacts: List[EmergencyContact]
+    nearby_resources: List[SafeResource]
     disclaimer: str
 
 
@@ -97,6 +120,28 @@ def get_fallback_contacts(location_string: str, database: dict) -> List[Emergenc
                 return [EmergencyContact(**contact) for contact in contact_list]
 
     return get_default_contacts(database)
+
+
+def search_nearby_resources(location: str) -> List[SafeResource]:
+    if not location:
+        return []
+
+    location_lower = location.lower()
+    matches = []
+
+    for resource in safe_resources_db:
+        city = resource.get("city", "").lower()
+        state = resource.get("state", "").lower()
+        country = resource.get("country", "").lower()
+
+        if (
+            city in location_lower
+            or state in location_lower
+            or country in location_lower
+        ):
+            matches.append(SafeResource(**resource))
+
+    return matches[:5]
 
 
 def classify_risk(msg: str) -> RiskClassification:
@@ -190,6 +235,7 @@ def assess(req: AssessRequest):
         classification = classify_risk(req.message)
         safety_plan = generate_safety_plan(req.message, classification, req.location)
         emergency_contacts = get_fallback_contacts(req.location, emergency_contacts_db)
+        nearby_resources = search_nearby_resources(req.location)
 
         return AssessResponse(
             risk_level=classification.risk_level.value,
@@ -197,6 +243,7 @@ def assess(req: AssessRequest):
             reason=classification.reason,
             safety_plan=safety_plan,
             emergency_contacts=emergency_contacts,
+            nearby_resources=nearby_resources,
             disclaimer=(
                 "SafePath AI is not a substitute for emergency services. "
                 "If you are in immediate danger, call 911 or your local emergency number."
@@ -207,6 +254,7 @@ def assess(req: AssessRequest):
         logger.error(f"Gemini API failure detected: {str(e)}")
 
         fallback_contacts = get_fallback_contacts(req.location, emergency_contacts_db)
+        nearby_resources = search_nearby_resources(req.location)
 
         return AssessResponse(
             risk_level=classification.risk_level.value if classification else "UNKNOWN",
@@ -222,6 +270,7 @@ def assess(req: AssessRequest):
                 ]
             ),
             emergency_contacts=fallback_contacts,
+            nearby_resources=nearby_resources,
             disclaimer=(
                 "We encountered a network issue. "
                 "Please use the emergency contacts below immediately if you need help."

@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Rochester Police Department",
+    "type": "police_station",
+    "city": "Rochester",
+    "state": "NY",
+    "country": "USA",
+    "phone": "911",
+    "availability": "24/7",
+    "verified": true
+  },
+  {
+    "name": "Strong Memorial Hospital",
+    "type": "hospital",
+    "city": "Rochester",
+    "state": "NY",
+    "country": "USA",
+    "phone": "911",
+    "availability": "24/7",
+    "verified": true
+  },
+  {
+    "name": "Willow Domestic Violence Center",
+    "type": "women_support_center",
+    "city": "Rochester",
+    "state": "NY",
+    "country": "USA",
+    "phone": "585-222-SAFE",
+    "availability": "24/7 hotline",
+    "verified": true
+  },
+  {
+    "name": "University Public Safety Office",
+    "type": "campus_safety",
+    "city": "Rochester",
+    "state": "NY",
+    "country": "USA",
+    "phone": "Campus safety line",
+    "availability": "Varies",
+    "verified": true
+  }
+]
