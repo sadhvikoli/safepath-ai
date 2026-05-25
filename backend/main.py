@@ -9,6 +9,8 @@ from google.genai import types
 from pydantic import BaseModel, Field
 from enum import Enum
 from dotenv import load_dotenv
+import os
+from elasticsearch import Elasticsearch
 
 load_dotenv()
 
@@ -26,6 +28,27 @@ app.add_middleware(
 )
 
 client = genai.Client()
+elastic_client = None
+
+try:
+    elastic_endpoint = os.getenv("ELASTIC_ENDPOINT")
+    elastic_api_key = os.getenv("ELASTIC_API_KEY")
+
+    if elastic_endpoint and elastic_api_key:
+        elastic_client = Elasticsearch(
+            hosts=[elastic_endpoint],
+            api_key=elastic_api_key,
+        )
+
+        logger.info("Elastic client initialized successfully.")
+    else:
+        logger.warning(
+            "Elastic credentials not found. Falling back to local resource search."
+        )
+
+except Exception as e:
+    logger.error(f"Elastic client initialization failed: {str(e)}")
+    elastic_client = None
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -226,7 +249,139 @@ Return valid JSON only.
 def read_root():
     return {"status": "SafePath AI running"}
 
+@app.get("/elastic-health")
+def elastic_health():
+    if elastic_client is None:
+        return {
+            "connected": False,
+            "message": "Elastic client is not configured."
+        }
 
+    try:
+        info = elastic_client.info()
+
+        return {
+            "connected": True,
+            "cluster_name": info.get("cluster_name"),
+            "version": info.get("version", {}).get("number"),
+        }
+
+    except Exception as e:
+        return {
+            "connected": False,
+            "error": str(e),
+        }
+
+@app.post("/create-index")
+def create_index():
+    if elastic_client is None:
+        return {
+            "success": False,
+            "message": "Elastic client not configured."
+        }
+
+    index_name = "safe_resources"
+
+    mapping = {
+        "mappings": {
+            "properties": {
+                "name": {"type": "text"},
+                "type": {"type": "keyword"},
+                "city": {"type": "text"},
+                "state": {"type": "text"},
+                "country": {"type": "text"},
+                "phone": {"type": "text"},
+                "availability": {"type": "text"},
+                "verified": {"type": "boolean"},
+            }
+        }
+    }
+
+    try:
+        exists = elastic_client.indices.exists(index=index_name)
+
+        if exists:
+            return {
+                "success": True,
+                "message": "Index already exists."
+            }
+
+        elastic_client.indices.create(
+            index=index_name,
+            body=mapping
+        )
+
+        return {
+            "success": True,
+            "message": "safe_resources index created."
+        }
+
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+        }
+
+@app.post("/seed-resources")
+def seed_resources():
+    if elastic_client is None:
+        return {
+            "success": False,
+            "message": "Elastic client not configured."
+        }
+
+    index_name = "safe_resources"
+
+    try:
+        count = 0
+
+        for resource in safe_resources_db:
+            elastic_client.index(
+                index=index_name,
+                document=resource
+            )
+            count += 1
+
+        elastic_client.indices.refresh(index=index_name)
+
+        return {
+            "success": True,
+            "message": f"Seeded {count} resources into Elastic."
+        }
+
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+def search_elastic_resources(location: str) -> List[SafeResource]:
+    if elastic_client is None or not location:
+        return search_nearby_resources(location)
+
+    try:
+        response = elastic_client.search(
+            index="safe_resources",
+            query={
+                "multi_match": {
+                    "query": location,
+                    "fields": ["city", "state", "country", "name", "type"]
+                }
+            },
+            size=5
+        )
+
+        resources = []
+
+        for hit in response["hits"]["hits"]:
+            resources.append(SafeResource(**hit["_source"]))
+
+        return resources
+
+    except Exception as e:
+        logger.error(f"Elastic resource search failed: {str(e)}")
+        return search_nearby_resources(location)
+    
 @app.post("/assess", response_model=AssessResponse)
 def assess(req: AssessRequest):
     classification: Optional[RiskClassification] = None
@@ -235,7 +390,7 @@ def assess(req: AssessRequest):
         classification = classify_risk(req.message)
         safety_plan = generate_safety_plan(req.message, classification, req.location)
         emergency_contacts = get_fallback_contacts(req.location, emergency_contacts_db)
-        nearby_resources = search_nearby_resources(req.location)
+        nearby_resources = search_elastic_resources(req.location)
 
         return AssessResponse(
             risk_level=classification.risk_level.value,
@@ -254,7 +409,7 @@ def assess(req: AssessRequest):
         logger.error(f"Gemini API failure detected: {str(e)}")
 
         fallback_contacts = get_fallback_contacts(req.location, emergency_contacts_db)
-        nearby_resources = search_nearby_resources(req.location)
+        nearby_resources = search_elastic_resources(req.location)
 
         return AssessResponse(
             risk_level=classification.risk_level.value if classification else "UNKNOWN",
