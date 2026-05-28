@@ -23,7 +23,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://safepath-ndm95jjuv-sadhvikolis-projects.vercel.app"
+        "https://safepath-ai-six.vercel.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
