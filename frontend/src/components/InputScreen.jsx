@@ -67,7 +67,31 @@ export default function InputScreen({
       }
     );
   }
+ function handleVoiceInput() {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
 
+    if (!SpeechRecognition) {
+      alert("Voice input is not supported in this browser. Please type your message.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.start();
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setMessage(transcript);
+    };
+
+    recognition.onerror = () => {
+      alert("Unable to capture voice input. Please try again or type your message.");
+    };
+  }
   return (
     <div className="app-container">
       <div className="card">
@@ -89,6 +113,14 @@ export default function InputScreen({
             rows={6}
           />
         </div>
+        <div className="button-row">
+  <button
+    type="button"
+    onClick={handleVoiceInput}
+  >
+    Use Voice Input
+  </button>
+</div>
 
         <div className="section">
           <label htmlFor="trustedContact">Trusted Contact (optional)</label>
