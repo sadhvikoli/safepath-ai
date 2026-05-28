@@ -7,7 +7,9 @@
     "country": "USA",
     "phone": "911",
     "availability": "24/7",
-    "verified": true
+    "verified": true,
+    "latitude": 43.1548,
+    "longitude": -77.6156
   },
   {
     "name": "Strong Memorial Hospital",
@@ -17,7 +19,9 @@
     "country": "USA",
     "phone": "911",
     "availability": "24/7",
-    "verified": true
+    "verified": true,
+    "latitude": 43.1226,
+    "longitude": -77.6272
   },
   {
     "name": "Willow Domestic Violence Center",
@@ -27,7 +31,9 @@
     "country": "USA",
     "phone": "585-222-SAFE",
     "availability": "24/7 hotline",
-    "verified": true
+    "verified": true,
+    "latitude": 43.1610,
+    "longitude": -77.6109
   },
   {
     "name": "University Public Safety Office",
@@ -37,6 +43,8 @@
     "country": "USA",
     "phone": "Campus safety line",
     "availability": "Varies",
-    "verified": true
+    "verified": true,
+    "latitude": 43.1282,
+    "longitude": -77.6286
   }
 ]

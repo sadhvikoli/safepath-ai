@@ -82,6 +82,8 @@ class SafeResource(BaseModel):
     phone: str
     availability: str
     verified: bool
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
 
 
 class AssessRequest(BaseModel):
@@ -434,3 +436,21 @@ def assess(req: AssessRequest):
                 "Please use the emergency contacts below immediately if you need help."
             ),
         )
+    
+@app.delete("/clear-resources")
+def clear_resources():
+    if elastic_client is None:
+        return {"success": False, "message": "Elastic client not configured."}
+
+    try:
+        elastic_client.delete_by_query(
+            index="safe_resources",
+            query={"match_all": {}},
+            conflicts="proceed"
+        )
+        elastic_client.indices.refresh(index="safe_resources")
+
+        return {"success": True, "message": "Cleared safe_resources index."}
+
+    except Exception as e:
+        return {"success": False, "error": str(e)}
