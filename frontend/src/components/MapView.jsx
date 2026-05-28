@@ -1,8 +1,6 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 export default function MapView({ resources }) {
-  const defaultCenter = [43.1566, -77.6088]; // Rochester, NY
-
   const resourcesWithCoords = resources.filter(
     (resource) => resource.latitude && resource.longitude
   );
@@ -12,7 +10,8 @@ export default function MapView({ resources }) {
       <div className="section">
         <h3>Resource Map</h3>
         <p>
-          Map view will appear when verified resources include coordinates.
+          No map is shown because no location was provided or nearby resources
+          do not include coordinates.
         </p>
       </div>
     );
@@ -25,39 +24,44 @@ export default function MapView({ resources }) {
 
   return (
     <div className="section">
-      <h3>Resource Map</h3>
+      <div className="map-header">
+        <div>
+          <h3>Nearby Safety Map</h3>
+          <p>
+            Verified safety resources near your provided location.
+          </p>
+        </div>
+      </div>
 
-      <MapContainer
-        center={center || defaultCenter}
-        zoom={13}
-        style={{
-          height: "320px",
-          width: "100%",
-          borderRadius: "16px",
-          overflow: "hidden",
-          marginTop: "16px",
-        }}
-      >
-        <TileLayer
-          attribution="&copy; OpenStreetMap contributors"
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+      <div className="map-wrapper">
+        <MapContainer
+          center={center}
+          zoom={13}
+          className="leaflet-map"
+        >
+          <TileLayer
+            attribution="&copy; OpenStreetMap contributors"
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
 
-        {resourcesWithCoords.map((resource, index) => (
-          <Marker
-            key={index}
-            position={[resource.latitude, resource.longitude]}
-          >
-            <Popup>
-              <strong>{resource.name}</strong>
-              <br />
-              {resource.type}
-              <br />
-              {resource.phone}
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
+          {resourcesWithCoords.map((resource, index) => (
+            <Marker
+              key={index}
+              position={[resource.latitude, resource.longitude]}
+            >
+              <Popup>
+                <strong>{resource.name}</strong>
+                <br />
+                {resource.type}
+                <br />
+                {resource.city}, {resource.state}
+                <br />
+                {resource.phone}
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      </div>
     </div>
   );
 }
