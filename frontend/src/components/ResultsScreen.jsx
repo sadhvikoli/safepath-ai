@@ -4,7 +4,7 @@ export default function ResultsScreen({ assessment, setScreen }) {
       <div className="card">
         <h1>Assessment Results</h1>
 
-        <div className="risk-badge">
+        <div className={`risk-badge risk-${assessment.risk_level.toLowerCase()}`}>
           Risk Level: {assessment.risk_level}
         </div>
 
@@ -38,11 +38,19 @@ export default function ResultsScreen({ assessment, setScreen }) {
             assessment.nearby_resources.map((resource, index) => (
               <div className="contact-card" key={index}>
                 <strong>{resource.name}</strong>
+
+                {resource.verified && (
+                  <small className="verified-badge">Verified Resource</small>
+                )}
+
                 <p>Type: {resource.type}</p>
+
                 <p>
                   {resource.city}, {resource.state}, {resource.country}
                 </p>
+
                 <p>Phone: {resource.phone}</p>
+
                 <small>Availability: {resource.availability}</small>
               </div>
             ))

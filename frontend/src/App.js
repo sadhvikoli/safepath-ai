@@ -21,21 +21,25 @@ export default function SafePathApp() {
 
   const [error, setError] = useState("");
   const [trustedContact, setTrustedContact] = useState("");
+
   async function handleAssessmentSubmit() {
     try {
       setError("");
       setScreen("loading");
 
-      const response = await fetch("http://127.0.0.1:8000/assess", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message,
-          location,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/assess`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message,
+            location,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Backend request failed");
@@ -51,37 +55,36 @@ export default function SafePathApp() {
     }
   }
 
+  let currentScreen = null;
+
   if (screen === "input") {
-    return (
+    currentScreen = (
       <InputScreen
-  message={message}
-  setMessage={setMessage}
-  location={location}
-  setLocation={setLocation}
-  useLocation={useLocation}
-  setUseLocation={setUseLocation}
-  trustedContact={trustedContact}
-  setTrustedContact={setTrustedContact}
-  handleAssessmentSubmit={handleAssessmentSubmit}
-/>
-    );
-  }
-
-  if (screen === "loading") {
-    return <LoadingScreen />;
-  }
-
-  if (screen === "results") {
-    return (
-      <ResultsScreen
-        assessment={assessment}
-        setScreen={setScreen}
+        message={message}
+        setMessage={setMessage}
+        location={location}
+        setLocation={setLocation}
+        useLocation={useLocation}
+        setUseLocation={setUseLocation}
+        trustedContact={trustedContact}
+        setTrustedContact={setTrustedContact}
+        handleAssessmentSubmit={handleAssessmentSubmit}
       />
     );
   }
 
+  if (screen === "loading") {
+    currentScreen = <LoadingScreen />;
+  }
+
+  if (screen === "results") {
+    currentScreen = (
+      <ResultsScreen assessment={assessment} setScreen={setScreen} />
+    );
+  }
+
   if (screen === "confirmation") {
-    return (
+    currentScreen = (
       <ConfirmationScreen
         assessment={assessment}
         sendAlert={sendAlert}
@@ -94,25 +97,28 @@ export default function SafePathApp() {
   }
 
   if (screen === "final") {
-    return (
+    currentScreen = (
       <FinalScreen
-  assessment={assessment}
-  trustedContact={trustedContact}
-  sendAlert={sendAlert}
-  saveIncident={saveIncident}
-  setScreen={setScreen}
-/>
-    );
-  }
-
-  if (screen === "error") {
-    return (
-      <ErrorScreen
-        error={error}
+        assessment={assessment}
+        trustedContact={trustedContact}
+        sendAlert={sendAlert}
+        saveIncident={saveIncident}
         setScreen={setScreen}
       />
     );
   }
 
-  return null;
+  if (screen === "error") {
+    currentScreen = <ErrorScreen error={error} setScreen={setScreen} />;
+  }
+
+  return (
+    <>
+      {currentScreen}
+
+      <footer className="footer">
+        SafePath AI • Privacy-First Safety Support • Powered by Gemini + Elastic
+      </footer>
+    </>
+  );
 }

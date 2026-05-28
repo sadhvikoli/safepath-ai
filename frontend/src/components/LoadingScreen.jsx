@@ -13,26 +13,7 @@ export default function LoadingScreen() {
             immediate safety recommendations.
           </p>
 
-          <div
-            style={{
-              width: "100%",
-              height: "12px",
-              background: "#e5e7eb",
-              borderRadius: "999px",
-              overflow: "hidden",
-              marginTop: "20px",
-            }}
-          >
-            <div
-              style={{
-                width: "70%",
-                height: "100%",
-                background: "#4f46e5",
-                borderRadius: "999px",
-                animation: "pulse 1.5s infinite",
-              }}
-            />
-          </div>
+          <div className="spinner"></div>
 
           <p
             style={{
