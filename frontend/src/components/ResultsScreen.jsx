@@ -1,3 +1,5 @@
+import MapView from "./MapView";
+
 export default function ResultsScreen({ assessment, setScreen }) {
   return (
     <div className="app-container">
@@ -56,6 +58,8 @@ export default function ResultsScreen({ assessment, setScreen }) {
             ))
           )}
         </div>
+
+        <MapView resources={assessment.nearby_resources} />
 
         <div className="section">
           <h3>Emergency Contacts</h3>

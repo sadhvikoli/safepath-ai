@@ -9,7 +9,7 @@ import ErrorScreen from "./components/ErrorScreen";
 
 export default function SafePathApp() {
   const [screen, setScreen] = useState("input");
-
+  const [locationMode, setLocationMode] = useState("manual");
   const [message, setMessage] = useState("");
   const [location, setLocation] = useState("");
   const [useLocation, setUseLocation] = useState(false);
@@ -69,6 +69,8 @@ export default function SafePathApp() {
         trustedContact={trustedContact}
         setTrustedContact={setTrustedContact}
         handleAssessmentSubmit={handleAssessmentSubmit}
+        locationMode={locationMode}
+        setLocationMode={setLocationMode}
       />
     );
   }
